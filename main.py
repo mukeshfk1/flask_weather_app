@@ -6,16 +6,17 @@ import utils
 
 app=Flask(__name__)
 
+#this route is for home url for weather app
 @app.route('/')
 def home(db = create_session()):
 
     db_location = db.query(models.Location).all()
-
-   
     db.close()
 
     return render_template('index.html',data = db_location)
 
+
+#this is for adding location with lat and long details
 @app.route('/new/location', methods=['POST'])
 def add_location(db=create_session()):
     form_location = request.form['location']
@@ -41,14 +42,7 @@ def get_weather():
 
     split_lat = get_long.split(',')
 
-    print(split_lat)
-
-    
-    
     weather_data = utils.get_weather_data(split_lat[0],split_lat[1],split_lat[2])
-
-
-    
     
     return render_template('weather.html',data = weather_data)
 
